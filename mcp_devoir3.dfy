@@ -39,6 +39,8 @@ Ce devoir est à remettre pour le **mercredi 20 décembre** sur Moodle.
 ***/
 
 
+
+
 predicate ordered(a: array<int>)
     /* `a[..]` est ordonné. */
     reads a
@@ -74,11 +76,30 @@ predicate same_elements(a1: array<int>, a2: array<int>)
 
 method merge(a1: array<int>, a2: array<int>) returns (a: array<int>)
     /* fusionne deux tableaux ordonnés `a1` et `a2` en un seul tableau ordonné `a`. */
+
+/* les 2 tableaux doivent être trier 
+les 2 arrays != NULL
+
+*/
 {
     // A IMPLEMENTER
 }
 
 method sort(a: array<int>) returns (b: array<int>)
+/*
+rajouter les spécifications 
+
+requires a!=null;
+requires lo <= m <= hi;
+requires 0 <= a1 <= L.Length;
+requires 0 <= m <= L.Length;
+requires 0 <= a2 <= L.Length;
+
+il faut replacer les requires ?
+
+*/
+
+
     /*  Retourne un tableau ordonné `b` contenant 
         les éléments de `a`. */
 {
