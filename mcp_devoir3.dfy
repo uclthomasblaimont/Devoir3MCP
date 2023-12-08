@@ -81,6 +81,7 @@ method merge(a1: array<int>, a2: array<int>) returns (a: array<int>)
 les 2 arrays != NULL
 
 */
+
 {
     // A IMPLEMENTER
 }
