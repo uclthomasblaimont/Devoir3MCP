@@ -81,7 +81,11 @@ method merge(a1: array<int>, a2: array<int>) returns (a: array<int>)
 les 2 arrays != NULL
 
 */
-
+requires a1 != null && a2 != null;
+requires ordered(a1) && ordered(a2);
+ensures a.Length == a1.Length + a2.Length;
+ensures ordered(a);
+//ensures same_elements(a,merge(a1,a2));
 {
     // A IMPLEMENTER
 }
