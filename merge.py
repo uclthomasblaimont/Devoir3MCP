@@ -49,7 +49,29 @@ def merge(array1, array2):
     print(new_array)
 
     # Retourner le tableau fusionné
-    return new_array  
+    return new_array
+
+def sort(array):
+    if len(array) <= 1: 
+        return array 
+    else:
+        m = len(array)//2
+        a1 = [0] * m
+        a2 = [0] * (len(array)-m)
+        for i in range(0 , m):
+            a1[i]=array[i]
+        for  i in range(0,(len(array)-m)):
+            a2[i] = array[m+i]
+        a1 = sort(a1)
+        a2 = sort(a2)
+        new_array = merge(a1,a2)
+    return new_array
+
+
+    
 
 # Appel de la fonction merge avec deux tableaux en exemple
-merge([1, 2], [3, 4])
+#merge([1, 2], [3, 4])
+print(sort([5,4,3,2,1]))
+
+

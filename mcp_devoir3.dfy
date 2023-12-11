@@ -98,8 +98,6 @@ ensures ordered(a)
 //ensures same_elements(a,a1 + a2)
 
 
-// j'ai un index out of range avec l'index k  ?
-
 {
 
     var i := 0 ;
@@ -130,7 +128,7 @@ ensures ordered(a)
         k := k + 1;
     }
 
-    //
+    
 
     while j < a2.Length {
         a[k] := a2[j];
@@ -141,19 +139,16 @@ ensures ordered(a)
 }
 
 method sort(a: array<int>) returns (b: array<int>)
-{
-    var a1 := 0 
-    var a2 := a.Length
-    var m := a[a2/2]
-}
+
 
 
 
 requires a!=null;
-requires a1 <= m <= a2;
-requires 0 <= a1 <= L.Length;
-requires 0 <= m <= L.Length;
-requires 0 <= a2 <= L.Length;
+ensures b != null
+ensures ordered(b)
+ensures a.Length == b.Length
+ensures same_elements(a,b)
+
 
 
 
@@ -183,7 +178,7 @@ requires 0 <= a2 <= L.Length;
  * Tests
  Ne pas toucher
  */
-method {:verify false} Main()
+method  Main()
 {
     var a := new int[][4,2,3,3,5,1];
     var b := sort(a);
