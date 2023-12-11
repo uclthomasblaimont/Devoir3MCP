@@ -1,49 +1,55 @@
-def merge(array1 ,array2):
-
+def merge(array1, array2):
+    # Longueurs des tableaux entrants
     len1 = len(array1)
     len2 = len(array2)
-    total_len = len1+len2
+    total_len = len1 + len2
 
+    # Affichage des longueurs pour le débogage
     print(len1 + len2)
     print(total_len)
 
-    i = 0 
-    j = 0
-    k = 0
+    # Initialisation des indices pour le parcours des tableaux
+    i, j, k = 0, 0, 0
 
-    new_array = [0]*total_len
+    # Initialisation du nouveau tableau qui accueillera les éléments fusionnés
+    new_array = [0] * total_len
 
-
-    while i < len1  and j < len2  :
-
-        if array1[i] <= array2 [j]:
-            print( "je place un élément de i dans le nouveau tableau")
+    # Parcourir les deux tableaux et fusionner les éléments
+    while i < len1 and j < len2:
+        # Comparaison des éléments des deux tableaux
+        if array1[i] <= array2[j]:
+            # Ajout de l'élément de array1 dans new_array
+            print("je place un élément de i dans le nouveau tableau")
             new_array[k] = array1[i]
-            i = i+1
+            i += 1
         else:
+            # Ajout de l'élément de array2 dans new_array
             print("je place un élément de j dans le nouveau tableau")
             new_array[k] = array2[j]
-            j = j+1
-        k = k +1
+            j += 1
+        k += 1
 
-    while i < len1 :
+    # Ajouter les éléments restants de array1, si nécessaire
+    while i < len1:
         print("--")
         print(k)
         new_array[k] = array1[i]
-        i = i + 1
-        k = k + 1
-        
+        i += 1
+        k += 1
 
-    while j < len2 :
+    # Ajouter les éléments restants de array2, si nécessaire
+    while j < len2:
         print("---")
         print(k)
-        new_array[k]  = array2[j]
-        j = j + 1
-        k = k + 1 
+        new_array[k] = array2[j]
+        j += 1
+        k += 1 
 
+    # Affichage du tableau fusionné pour le débogage
     print(new_array)
 
+    # Retourner le tableau fusionné
     return new_array  
 
-merge([1,2],[3,4])
-
+# Appel de la fonction merge avec deux tableaux en exemple
+merge([1, 2], [3, 4])

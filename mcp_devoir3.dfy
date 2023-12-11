@@ -44,14 +44,14 @@ Ce devoir est à remettre pour le **mercredi 20 décembre** sur Moodle.
 predicate ordered(a: array<int>)
     /* `a[..]` est ordonné. */
     reads a
-    requires a != null;
+    requires a != null
 {
     forall i,j | 0 <= i < j < a.Length :: a[i] <= a[j]
 }
 
 predicate ordered_upto(a: array<int>, n: int)
     /* `a[..n]` est ordonné. */
-    requires a != null;
+    requires a != null
     requires 0 <= n <= a.Length
     reads a
 {
@@ -60,7 +60,7 @@ predicate ordered_upto(a: array<int>, n: int)
 
 predicate ordered_split(a1: array<int>, n1: int, a2: array<int>, n2: int)
     /* a1[..i1] <= a2[i2..] */
-    requires a1 != null && a2!= null;
+    requires a1 != null && a2!= null
     requires 0 <= n1 <= a1.Length
     requires 0 <= n2 <= a2.Length
     reads a1, a2
@@ -72,19 +72,33 @@ predicate ordered_split(a1: array<int>, n1: int, a2: array<int>, n2: int)
 
 predicate same_elements(a1: array<int>, a2: array<int>)
     /* `a1[..]` et `a2[..]` contiennent les mêmes éléments. */
-    requires a1 != null && a2 != null;
-    reads a1, a2;
+    requires a1 != null && a2 != null
+    reads a1, a2
 {
     multiset(a1[..]) == multiset(a2[..])
 }
 
 method merge(a1: array<int>, a2: array<int>) returns (a: array<int>)
-    /* fusionne deux tableaux ordonnés `a1` et `a2` en un seul tableau ordonné `a`. */
+    /* fusionne deux tableaux ordonnés `a1` et `a2` en un seul tableau ordonné `a`.
+    spécifiction : 
+    - a1 et a2 != null
+    - a1 et a2 sont triés
+    - a != null
+    - La longueur de a = a1.length + a2.length
+    - a est trié
+    - TRUE <==> same_elements(a,a1+a2)    
+     */
 
 
-requires a1 != null && a2 != null;
-requires ordered(a1) && ordered(a2);
-ensures a.Length == a1.Length + a2.Length;
+requires a1 != null && a2 != null
+requires ordered(a1) && ordered(a2)
+ensures a.Length == a1.Length + a2.Length
+ensures a != null
+ensures ordered(a) 
+//ensures same_elements(a,a1 + a2)
+
+
+// j'ai un index out of range avec l'index k  ?
 
 {
 
@@ -95,7 +109,7 @@ ensures a.Length == a1.Length + a2.Length;
     a := new int[length];
 
 
-    while i < a1.Length && j < a2.Length{
+    while i < a1.Length  && j < a2.Length{
         if a1[i] <= a2[j]{
             a[k] := a1[i]; 
             i := i+1;
@@ -107,6 +121,8 @@ ensures a.Length == a1.Length + a2.Length;
         k:= k + 1;
     }
 
+    //
+
 
     while i < a1.Length {
         a[k] := a1[i];
@@ -114,15 +130,22 @@ ensures a.Length == a1.Length + a2.Length;
         k := k + 1;
     }
 
+    //
+
     while j < a2.Length {
         a[k] := a2[j];
         j := j + 1;
         k := k + 1;
     }
-    // A IMPLEMENTER
+    
 }
 
 method sort(a: array<int>) returns (b: array<int>)
+{
+    var a1 := 0 
+    var a2 := a.Length
+    var m := a[a2/2]
+}
 
 
 
@@ -131,6 +154,8 @@ requires a1 <= m <= a2;
 requires 0 <= a1 <= L.Length;
 requires 0 <= m <= L.Length;
 requires 0 <= a2 <= L.Length;
+
+
 
 
 
