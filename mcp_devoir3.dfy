@@ -39,7 +39,7 @@ Ce devoir est à remettre pour le **mercredi 20 décembre** sur Moodle.
 ***/
 
 
-
+// poulet
 
 predicate ordered(a: array<int>)
     /* `a[..]` est ordonné. */
