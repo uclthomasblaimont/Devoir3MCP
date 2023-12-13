@@ -4,7 +4,7 @@
     ================================================
     Automne 2023, Charles Pecheur
 
-Pour ce troisième devoir, il vous est demandé de compléter, spécifier et de vérifier 
+Pour ce troisième devoir, il vous est demandé de com lpléter, spécifier et de vérifier 
 le programme Dafny ci-dessous.  
 
 Il s'agit d'une implémentation de tri par fusion sur des tableaux. Vous devez implémenter 
@@ -84,12 +84,12 @@ method merge(a1: array<int>, a2: array<int>) returns (a: array<int>)
      */
 
 
-requires a1 != null && a2 != null
+
 requires ordered(a1) && ordered(a2)
 ensures a.Length == a1.Length + a2.Length
-ensures a != null
 ensures ordered(a) 
-//ensures same_elements(a,a1 + a2) // il faut demander pq c'est rouge 
+
+ensures multiset(a[..]) == multiset(a1[..]) + multiset(a2[..]) // il faut demander pq c'est rouge 
 
 
 {
@@ -102,12 +102,25 @@ ensures ordered(a)
 
 
     while i < a1.Length  && j < a2.Length
+    decreases a1.Length - i 
+    decreases a2.Length - j
     invariant 0 <= i <= a1.Length
     invariant 0 <= j <= a2.Length
-    invariant 0 <= k <= a.Length
-    invariant ordered_upto(a, k)
+    invariant 0 <= k == i + j 
+    invariant multiset(a[..k]) == multiset(a1[..i]) + multiset(a2[..j])
+    invariant ordered_split(a,k,a1,i)
+    invariant ordered_split(a,k,a2,j)
+    invariant ordered_upto(a,k)
+    //invariant same_elements(multiset(a[..k]),multiset(a1[..i]) + multiset(a2[..j])) je ne sais pas si je dois le mettre 
+    // il faut voir avec le multiset en  dessous
+   
+    
+    
+    
+
+    // FAIL invariant ordered_upto(a, k)
     // FAIL  invariant same_elements(a[..k],multiset(a1[..i])+multiset(a2[..j]))
-    // ^ il faut demander pourqoi cette fonction n'est pas bonne
+    // ^ il faut demander pourquoi cette fonction n'est pas bonne
     
     {
         
@@ -126,11 +139,14 @@ ensures ordered(a)
 
 
     while i < a1.Length 
+    decreases a1.Length - i
     invariant 0 <= i <= a1.Length
-    invariant 0 <= k <= a.Length
+    invariant 0 <= k < a1.Length
+    invariant multiset(a[..k]) == multiset(a1[..i]) + multiset(a2[..j])
     invariant ordered_upto(a, k)
+    
     {
-        a[k] := a1[i];
+        a[k] := a1[i];  // index out of range ?
         i := i + 1;
         k := k + 1;
     }
@@ -138,9 +154,12 @@ ensures ordered(a)
     
 
     while j < a2.Length 
+    decreases a2.Length - j
     invariant 0 <= j <= a2.Length
-    invariant 0 <= k <= a.Length
+    invariant 0 <= k < a2.Length
+    invariant multiset(a[..k]) == multiset(a1[..i]) + multiset(a2[..j])
     invariant ordered_upto(a, k)
+    
     {
         a[k] := a2[j];
         j := j + 1;
@@ -151,10 +170,7 @@ ensures ordered(a)
 
 method sort(a: array<int>) returns (b: array<int>)
 
-
-
-
-requires a!=null;
+requires a!=null
 ensures b != null
 ensures ordered(b)
 ensures a.Length == b.Length
@@ -181,7 +197,7 @@ ensures same_elements(a,b)
  * Tests
  Ne pas toucher
  */
-method {:verify false} Main()
+method  Main()
 {
     var a := new int[][4,2,3,3,5,1];
     var b := sort(a);

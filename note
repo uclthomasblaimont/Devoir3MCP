@@ -1,0 +1,49 @@
+method merge(a1: array<int>, a2: array<int>) returns (a: array<int>)
+    requires ordered(a1) && ordered(a2)
+    ensures a.Length == a1.Length + a2.Length
+    ensures ordered(a) 
+    ensures multiset(a[..]) == multiset(a1[..]) + multiset(a2[..]) 
+{
+    var i := 0;
+    var j := 0;
+    var k := 0;
+    var length := a1.Length + a2.Length;
+    a := new int[length];
+
+    while i < a1.Length && j < a2.Length
+        invariant 0 <= i <= a1.Length
+        invariant 0 <= j <= a2.Length
+        invariant 0 <= k <= length
+        invariant 0 <= k == i + j
+        invariant forall l | 0 <= l < i :: a1[l] <= a1[i]
+        invariant forall l | 0 <= l < j :: a2[l] <= a2[j]
+        invariant forall l1, l2 | 0 <= l1 < i && 0 <= l2 < j :: a1[l1] <= a2[l2]
+        invariant multiset(a[..k]) == multiset(a1[..i]) + multiset(a2[..j])
+    {
+        // Votre code de fusion ici
+    }
+
+    // Boucles pour ajouter les éléments restants de a1 et a2
+    // Ajouter des invariants similaires comme ci-dessus
+}
+
+method sort(a: array<int>) returns (b: array<int>)
+    requires a != null
+    ensures b != null
+    ensures ordered(b)
+    ensures a.Length == b.Length
+    ensures same_elements(a, b)
+{
+    if a.Length <= 1 {
+        b := a;
+    } else {
+        var m := a.Length / 2;
+        var a1 := new int[m];
+        var a2 := new int[a.Length - m];
+        // Invariants pour assurer la division correcte de a
+        // Votre code de tri ici
+    }
+}
+
+// Votre code de Main et autres méthodes reste inchangé
+
