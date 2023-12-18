@@ -40,6 +40,7 @@ Ce devoir est à remettre pour le **mercredi 20 décembre** sur Moodle.
 
 
 // poulet
+// poulet
 
 predicate ordered(a: array<int>)
     /* `a[..]` est ordonné. */
@@ -102,6 +103,7 @@ ensures multiset(a[..]) == multiset(a1[..]) + multiset(a2[..]) // il faut demand
 
 
     while i < a1.Length  && j < a2.Length
+    decreases a1.Length + a2.Length - i - j
     decreases a1.Length - i 
     decreases a2.Length - j
     invariant 0 <= i <= a1.Length
@@ -110,20 +112,8 @@ ensures multiset(a[..]) == multiset(a1[..]) + multiset(a2[..]) // il faut demand
     invariant multiset(a[..k]) == multiset(a1[..i]) + multiset(a2[..j])
     invariant ordered_split(a,k,a1,i)
     invariant ordered_split(a,k,a2,j)
-    invariant ordered_upto(a,k)
-    //invariant same_elements(multiset(a[..k]),multiset(a1[..i]) + multiset(a2[..j])) je ne sais pas si je dois le mettre 
-    // il faut voir avec le multiset en  dessous
-   
-    
-    
-    
-
-    // FAIL invariant ordered_upto(a, k)
-    // FAIL  invariant same_elements(a[..k],multiset(a1[..i])+multiset(a2[..j]))
-    // ^ il faut demander pourquoi cette fonction n'est pas bonne
-    
+    invariant ordered_upto(a,k)    
     {
-        
         if a1[i] <= a2[j]{
             a[k] := a1[i]; 
             i := i+1;
@@ -139,14 +129,17 @@ ensures multiset(a[..]) == multiset(a1[..]) + multiset(a2[..]) // il faut demand
 
 
     while i < a1.Length 
-    decreases a1.Length - i
+    decreases a1.Length  - i
     invariant 0 <= i <= a1.Length
     invariant 0 <= k < a1.Length
     invariant multiset(a[..k]) == multiset(a1[..i]) + multiset(a2[..j])
     invariant ordered_upto(a, k)
     
     {
-        a[k] := a1[i];  // index out of range ?
+
+        
+        
+        a[k] := a1[i]; 
         i := i + 1;
         k := k + 1;
     }
@@ -154,7 +147,7 @@ ensures multiset(a[..]) == multiset(a1[..]) + multiset(a2[..]) // il faut demand
     
 
     while j < a2.Length 
-    decreases a2.Length - j
+    decreases length - k
     invariant 0 <= j <= a2.Length
     invariant 0 <= k < a2.Length
     invariant multiset(a[..k]) == multiset(a1[..i]) + multiset(a2[..j])
@@ -175,6 +168,7 @@ ensures b != null
 ensures ordered(b)
 ensures a.Length == b.Length
 ensures same_elements(a,b)
+decreases a.Length  // Ajout de la clause decreases
     /*  Retourne un tableau ordonné `b` contenant 
         les éléments de `a`. */
 {
