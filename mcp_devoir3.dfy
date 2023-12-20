@@ -43,6 +43,7 @@ Ce devoir est à remettre pour le **mercredi 20 décembre** sur Moodle.
 // poulet
 
 predicate ordered(a: array<int>)
+// Vérifie si le tableau "a" est bien ordonné
     /* `a[..]` est ordonné. */
     reads a
     requires a != null
@@ -86,11 +87,11 @@ method merge(a1: array<int>, a2: array<int>) returns (a: array<int>)
 
 
 
-requires ordered(a1) && ordered(a2)
-ensures a.Length == a1.Length + a2.Length
-ensures ordered(a) 
+requires ordered(a1) && ordered(a2) // on doit avoir les 2 inputs ordonnés
+ensures a.Length == a1.Length + a2.Length // la longueur du tableau final  est la somme des longueurs des 2 tableaux
+ensures ordered(a)  // on assure à la fin de la fonction merge que le tableau "a" sera trié
 
-ensures multiset(a[..]) == multiset(a1[..]) + multiset(a2[..]) // il faut demander pq c'est rouge 
+ensures multiset(a[..]) == multiset(a1[..]) + multiset(a2[..]) // on vérifié qu'on aura à chaque fois les mêmes éléments du début jusquà la fin
 
 
 {
@@ -131,7 +132,7 @@ ensures multiset(a[..]) == multiset(a1[..]) + multiset(a2[..]) // il faut demand
     while i < a1.Length 
     decreases a1.Length  - i
     invariant 0 <= i <= a1.Length
-    invariant 0 <= k < a1.Length
+    invariant 0 <= k < a1.Length // FAIL
     invariant multiset(a[..k]) == multiset(a1[..i]) + multiset(a2[..j])
     invariant ordered_upto(a, k)
     
@@ -163,7 +164,7 @@ ensures multiset(a[..]) == multiset(a1[..]) + multiset(a2[..]) // il faut demand
 
 method sort(a: array<int>) returns (b: array<int>)
 
-requires a!=null
+requires a != null
 ensures b != null
 ensures ordered(b)
 ensures a.Length == b.Length
