@@ -106,10 +106,35 @@ ensures multiset(a[..]) == multiset(a1[..]) + multiset(a2[..]) // il faut demand
     decreases a1.Length + a2.Length - i - j
     decreases a1.Length - i 
     decreases a2.Length - j
+
+
+    /*invariant 0 <= i <= a1.Length :
+     Cet invariant garantit que l’indice i reste dans les limites du tableau a1. 
+    Il est nécessaire pour éviter les débordements de tableau. */
     invariant 0 <= i <= a1.Length
+
+    /*invariant 0 <= j <= a2.Length : 
+    De même, cet invariant garantit que l’indice j reste dans les limites du tableau a2.*/
     invariant 0 <= j <= a2.Length
+
+
+    /*invariant 0 <= k == i + j : Cet invariant garantit que l’indice k est toujours égal à la somme des indices i et j. 
+    Cela assure que k avance correctement à travers le tableau de sortie a 
+    à mesure que les éléments sont fusionnés à partir des tableaux a1 et a2. */
     invariant 0 <= k == i + j 
+
+
+    /*invariant multiset(a[..k]) == multiset(a1[..i]) + multiset(a2[..j]) : 
+    Cet invariant garantit que le multiset des éléments dans a jusqu’à l’indice k est égal 
+    à la somme des multisets des éléments dans a1 jusqu’à l’indice i et dans a2 jusqu’à l’indice j. 
+    Cela assure que tous les éléments de a1 et a2 sont correctement fusionnés dans a.*/
     invariant multiset(a[..k]) == multiset(a1[..i]) + multiset(a2[..j])
+
+
+
+    /*invariant ordered_split(a,k,a1,i) et invariant ordered_split(a,k,a2,j) : 
+    Ces invariants garantissent que tous les éléments de a jusqu’à l’indice k sont inférieurs ou égaux à tous les éléments restants dans a1 et a2. 
+    Cela assure que les éléments sont fusionnés dans l’ordre correct.*/
     invariant ordered_split(a,k,a1,i)
     invariant ordered_split(a,k,a2,j)
     invariant ordered_upto(a,k)    
@@ -129,8 +154,16 @@ ensures multiset(a[..]) == multiset(a1[..]) + multiset(a2[..]) // il faut demand
 
 
     while i < a1.Length 
+
+    /*decreases a1.Length - i : Cette clause decreases garantit que la valeur de i augmente à chaque itération,
+     ce qui prouve que la boucle se termine.*/
     decreases a1.Length  - i
+
+    /*invariant 0 <= i <= a1.Length :
+     Cet invariant garantit que l’indice i reste dans les limites du tableau a1.*/
     invariant 0 <= i <= a1.Length
+
+    
     invariant 0 <= k < a1.Length
     invariant multiset(a[..k]) == multiset(a1[..i]) + multiset(a2[..j])
     invariant ordered_upto(a, k)
